@@ -376,6 +376,50 @@
         scrollbar-width: none; /* Firefox */
       }
 
+      /* ================= FLOATING DOCK STABILITY FIX ================= */
+
+      /* Kontainer Utama Dock */
+      #floating-dock {
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Setiap Item Dock */
+      .dock-item {
+        transition:
+          transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1),
+          background-color 0.2s,
+          border-color 0.2s;
+        will-change: transform;
+        transform-origin: bottom center; /* Membesar secara proporsional ke arah atas */
+      }
+
+      /* Tooltip Melayang yang Rapi di Atas Item */
+      .dock-item .dock-tooltip {
+        position: absolute;
+        bottom: 120%; /* Posisikan stabil di atas ikon */
+        left: 50%;
+        transform: translateX(-50%) translateY(4px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.15s ease,
+          transform 0.15s ease;
+        white-space: nowrap;
+        z-index: 100;
+      }
+
+      /* Tampilkan Tooltip saat Hover */
+      .dock-item:hover .dock-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0px);
+      }
+
       /* Sembunyikan Dock di Layar Sangat Kecil jika diperlukan */
       @media (max-height: 500px) {
         #floating-dock-container {
@@ -671,23 +715,23 @@
       ></div>
     </div>
 
-    <!-- 2. Dynamic Floating Dock Navigation (MacOS Style) -->
+    <!-- Dynamic Floating Dock Navigation (MacOS Style) -->
     <div
       id="floating-dock-container"
-      class="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-[9990] w-full max-w-[95vw] sm:max-w-max px-2 transition-transform duration-300"
+      class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9990] w-full max-w-[98vw] sm:max-w-max px-2"
     >
       <nav
         id="floating-dock"
-        class="flex items-center gap-1.5 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 rounded-2xl glass-panel border border-slate-700/60 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-x-auto no-scrollbar scroll-smooth"
+        class="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-2xl glass-panel border border-slate-700/60 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-x-auto sm:overflow-visible no-scrollbar scroll-smooth"
       >
         <!-- Dock Item 1: Home -->
         <a
           href="#hero"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
         >
-          <i class="fa-solid fa-house text-sm sm:text-base"></i>
+          <i class="fa-solid fa-house text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Home</span
           >
         </a>
@@ -695,11 +739,11 @@
         <!-- Dock Item 2: About -->
         <a
           href="#about"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-secondary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-secondary transition-colors"
         >
-          <i class="fa-solid fa-info text-sm sm:text-base"></i>
+          <i class="fa-solid fa-info text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >About</span
           >
         </a>
@@ -707,11 +751,11 @@
         <!-- Dock Item 3: Terminal Console -->
         <a
           href="#terminal-bio"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
         >
-          <i class="fa-solid fa-terminal text-sm sm:text-base"></i>
+          <i class="fa-solid fa-terminal text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Console</span
           >
         </a>
@@ -719,11 +763,11 @@
         <!-- Dock Item 4: Skill Arsenal -->
         <a
           href="#arsenal"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-secondary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-secondary transition-colors"
         >
-          <i class="fa-solid fa-microchip text-sm sm:text-base"></i>
+          <i class="fa-solid fa-microchip text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Arsenal</span
           >
         </a>
@@ -731,11 +775,11 @@
         <!-- Dock Item 5: Core Competencies -->
         <a
           href="#skills"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
         >
-          <i class="fa-solid fa-screwdriver-wrench text-sm sm:text-base"></i>
+          <i class="fa-solid fa-screwdriver-wrench text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Skills</span
           >
         </a>
@@ -743,11 +787,11 @@
         <!-- Dock Item 6: Selected Works -->
         <a
           href="#works"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
         >
-          <i class="fa-solid fa-file text-sm sm:text-base"></i>
+          <i class="fa-solid fa-file text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Works</span
           >
         </a>
@@ -755,28 +799,26 @@
         <!-- Dock Item 7: Labs -->
         <a
           href="#lab"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
         >
-          <i class="fa-solid fa-flask text-sm sm:text-base"></i>
+          <i class="fa-solid fa-flask text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Labs</span
           >
         </a>
 
         <!-- Divider -->
-        <div
-          class="shrink-0 w-px h-5 sm:h-6 bg-slate-700/60 mx-0.5 sm:mx-1"
-        ></div>
+        <div class="shrink-0 w-px h-5 sm:h-6 bg-slate-700/60 mx-0.5"></div>
 
         <!-- Dock Item 8: Mini Logic -->
         <a
           href="#minilogic"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-secondary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-secondary transition-colors"
         >
-          <i class="fa-solid fa-diagram-project text-sm sm:text-base"></i>
+          <i class="fa-solid fa-diagram-project text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Mini Logic</span
           >
         </a>
@@ -784,11 +826,11 @@
         <!-- Dock Item 9: Testimonials -->
         <a
           href="#testimonials"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
         >
-          <i class="fa-solid fa-comments text-sm sm:text-base"></i>
+          <i class="fa-solid fa-comments text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Reviews</span
           >
         </a>
@@ -796,11 +838,11 @@
         <!-- Dock Item 10: Gallery -->
         <a
           href="#gallery"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
         >
-          <i class="fa-solid fa-camera-retro text-sm sm:text-base"></i>
+          <i class="fa-solid fa-camera-retro text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Gallery</span
           >
         </a>
@@ -808,11 +850,11 @@
         <!-- Dock Item 11: Contact -->
         <a
           href="#contact"
-          class="dock-item relative group shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
+          class="dock-item relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white hover:bg-pink-500 transition-colors"
         >
-          <i class="fa-solid fa-paper-plane text-sm sm:text-base"></i>
+          <i class="fa-solid fa-paper-plane text-sm"></i>
           <span
-            class="absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-slate-900/90 text-white text-[11px] font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-slate-800 shadow-lg hidden sm:block"
+            class="dock-tooltip px-2.5 py-1 bg-slate-900/95 text-white text-[11px] font-mono rounded-lg border border-slate-800 shadow-xl hidden sm:block"
             >Contact</span
           >
         </a>
@@ -3980,9 +4022,9 @@
           about: `Hi! I'm Re'fandi Indra Maulana. A creative designer and Informatics student.<br>
                           Creative Designer & Cinematic Visualizer. Crafting beautiful interfaces, directing impactful narratives, and writing structured code to bring ideas to life.`,
 
-          skills: `<span class="text-emerald-400">Tech:</span> Python, Javascript, Java, MySQL, HTML, Tailwind CSS<br>
+          skills: `<span class="text-yellow-400">Tech:</span> Python, Javascript, Java, MySQL, HTML, Tailwind CSS<br>
                            <span class="text-pink-400">Design:</span> Figma, Adobe Illustrator, Canva, Affinity, Photoshop, <br>
-                           <span class="text-brand-secondary">Video:</span> DaVinci Resolve, After Effects, Cavalry<br>
+                           <span class="text-brand-secondary">Video:</span> CapCut, DaVinci Resolve, After Effects, Cavalry<br>
                            <span class="text-emerald-400">Photo:</span> Lightroom, Adobe Lightroom Clasic, Photoshop, PixelLab, Snapseed<br>`,
 
           education: `Universitas Sebelas Maret (UNS) PSDKU Kebumen<br>
@@ -4036,7 +4078,8 @@
         "Cinematic Visualizer.",
         "UI/UX Designer.",
         "Fornt-End Developer.",
-        "Photogrpher & Videographer.",
+        "Photogrpher Enthusiast.",
+        "Videographer Enthusiast.",
       ];
 
       let roleIndex = 0;
@@ -4642,59 +4685,43 @@
         });
       });
 
-      // ================= SCROLL PROGRESS BAR & MAGNIFICATION DOCK =================
+      // ================= FIXED MACOS DOCK MAGNIFICATION LOGIC =================
       document.addEventListener("DOMContentLoaded", function () {
-        // 1. Scroll Progress Bar Calculation
-        const progressBar = document.getElementById("scroll-progress-bar");
-
-        window.addEventListener("scroll", () => {
-          if (progressBar) {
-            const scrollTop =
-              window.scrollY || document.documentElement.scrollTop;
-            const scrollHeight =
-              document.documentElement.scrollHeight -
-              document.documentElement.clientHeight;
-
-            if (scrollHeight > 0) {
-              const progressPercentage = (scrollTop / scrollHeight) * 100;
-              progressBar.style.width = `${progressPercentage}%`;
-            }
-          }
-        });
-
-        // 2. MacOS-Style Floating Dock Magnification Logic
         const dock = document.getElementById("floating-dock");
         const dockItems = document.querySelectorAll(".dock-item");
 
         if (dock && dockItems.length > 0) {
           dock.addEventListener("mousemove", (e) => {
-            const dockRect = dock.getBoundingClientRect();
             const mouseX = e.clientX;
 
             dockItems.forEach((item) => {
               const itemRect = item.getBoundingClientRect();
               const itemCenter = itemRect.left + itemRect.width / 2;
 
-              // Hitung jarak horizontal kursor mouse ke pusat ikon
+              // Hitung jarak horizontal kursor ke pusat ikon
               const distance = Math.abs(mouseX - itemCenter);
-
-              // Radius efek magnification (120px)
-              const maxDistance = 120;
+              const maxDistance = 90; // Radius area pengaruh perbesaran
 
               if (distance < maxDistance) {
-                // Hitung skala pembesaran (1x sampai 1.45x)
-                const scale = 1 + (1 - distance / maxDistance) * 0.45;
-                item.style.transform = `scale(${scale}) translateY(-6px)`;
+                // Skala membesar dari 1x hingga maksimal 1.3x (seimbang & tidak merusak layout)
+                const scale = 1 + (1 - distance / maxDistance) * 0.1;
+                // Mengangkat ikon sedikit ke atas saat membesar
+                const translateY = (1 - distance / maxDistance) * -4;
+
+                item.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                item.style.zIndex = "10";
               } else {
                 item.style.transform = "scale(1) translateY(0px)";
+                item.style.zIndex = "1";
               }
             });
           });
 
-          // Reset skala ikon saat kursor meninggalkan area dock
+          // Reset semua posisi saat kursor keluar dari dock
           dock.addEventListener("mouseleave", () => {
             dockItems.forEach((item) => {
               item.style.transform = "scale(1) translateY(0px)";
+              item.style.zIndex = "1";
             });
           });
         }
