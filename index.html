@@ -597,31 +597,72 @@
         color: #94a3b8 !important;
       }
 
-      /* Penyesuaian Instagram Showcase di Light Mode */
+      /* ================= OVERRIDE LIGHT MODE UNTUK INSTAGRAM SHOWCASE ================= */
+
+      /* 1. Glass Panel Utama */
       html.light #instagram-showcase .glass-panel {
         background-color: rgba(255, 255, 255, 0.85) !important;
         border-color: rgba(0, 0, 0, 0.08) !important;
         box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
       }
 
+      /* 2. Warna Teks & Heading */
       html.light #instagram-showcase h3,
       html.light #instagram-showcase h4,
-      html.light #instagram-showcase .profile-username {
-        color: #0f172a !important;
+      html.light #instagram-showcase .profile-username,
+      html.light #instagram-showcase .text-white {
+        color: #0f172a !important; /* Slate 900 */
       }
 
       html.light #instagram-showcase p,
-      html.light #instagram-showcase .profile-bio {
-        color: #475569 !important;
+      html.light #instagram-showcase .profile-bio,
+      html.light #instagram-showcase .text-slate-300,
+      html.light #instagram-showcase .text-slate-400 {
+        color: #475569 !important; /* Slate 600 */
       }
 
-      html.light #instagram-showcase .stat-box {
-        background-color: #f1f5f9 !important;
-        border-color: #cbd5e1 !important;
+      /* 3. Kotak Statistik (Primary & Secondary Accounts) */
+      html.light #instagram-showcase .stat-box,
+      html.light #instagram-showcase .bg-slate-950\/60 {
+        background-color: #f1f5f9 !important; /* Latar abu-abu terang */
+        border-color: #cbd5e1 !important; /* Border halus */
       }
 
-      html.light #instagram-showcase .stat-number {
+      html.light #instagram-showcase .stat-number,
+      html.light #instagram-showcase .bg-slate-950\/60 span.font-bold {
+        color: #0f172a !important; /* Angka menjadi gelap */
+      }
+
+      /* 4. Garis Pembatas (Divider) & Border Post Feed */
+      html.light #instagram-showcase .border-slate-700\/50,
+      html.light #instagram-showcase .border-slate-800\/80,
+      html.light #instagram-showcase .border-slate-800 {
+        border-color: rgba(0, 0, 0, 0.1) !important;
+      }
+
+      /* 5. Border Avatar Profile (Menghindari outline hitam yang kurang cocok) */
+      html.light #instagram-showcase .border-slate-900 {
+        border-color: #ffffff !important;
+      }
+
+      /* 6. Kotak Placeholder Feed Preview */
+      html.light #instagram-showcase .bg-slate-950 {
+        background-color: #f8fafc !important;
+      }
+
+      /* 7. Tombol "Kunjungi Profil" Akun Sekunder */
+      html.light #instagram-showcase a.bg-slate-800\/80 {
+        background-color: #ffffff !important;
         color: #0f172a !important;
+        border-color: #cbd5e1 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+      }
+
+      /* Hover efek tombol di Light Mode menyesuaikan warna akun (Cyan/Pink) */
+      html.light #instagram-showcase a.bg-slate-800\/80:hover {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        border-color: #0f172a !important;
       }
 
       /* ================= FOOTER LIGHT MODE FIX ================= */
